@@ -82,6 +82,10 @@ def view_expenses():
     action = switcher.get(choice, lambda: print("Invalid choice"))
     action()
 
+def save_and_exit():
+    save_expenses_to_csv()
+    exit()
+
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
 
@@ -96,7 +100,7 @@ if __name__ == '__main__':
             '2': view_expenses,
             '3': monthly_expense_tracker,
             '4': save_expenses_to_csv,
-            '5': lambda: exit()
+            '5': save_and_exit
         }
 
         action = switcher.get(choice, lambda: print("Invalid choice"))
