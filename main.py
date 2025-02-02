@@ -1,4 +1,5 @@
 # This is a sample Python script.
+import csv
 from datetime import datetime
 
 from expense_tracker import ExpenseTracker
@@ -37,13 +38,32 @@ def console_add_expense():
             print("Invalid date format. Please enter the date in YYYY-MM-DD format.")
 
     description = input("Description: ")
-    return {"amount": amount, "category": category, "date": date_input, "description": description}
+    return {"Amount": amount, "Category": category, "Date": date_input, "Description": description}
 
 
 def add_expense_to_tracker():
     expense = console_add_expense()
     expense_tracker.add_expense(expense)
 
+def save_expenses_to_csv(filename='expenses.csv'):
+    with open(filename, mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(['Date', 'Category', 'Amount', 'Description'])
+        for expense in expense_tracker.get_expenses():
+            writer.writerow([expense['Date'], expense['Category'], expense['Amount'], expense['Description']])
+
+def load_expenses_from_csv(filename='expenses.csv'):
+    expenses = []
+    try:
+        with open(filename, mode='r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                print(row)
+                row['Amount'] = float(row['Amount'])
+                expenses.append(row)
+    except FileNotFoundError:
+        print(f"{filename} not found. Starting with an empty expense tracker.")
+    return expenses
 
 def monthly_expense_tracker():
     if ExpenseTracker.monthly_budget == 0:
@@ -52,25 +72,12 @@ def monthly_expense_tracker():
     expense_tracker.calculate_total_expenses_recorded()
 
 def view_expenses():
-    print("View expenses")
+    print("*** View expenses ***")
     print("1. View all expenses")
-    print("2. View expenses by category")
-    print("3. View expenses by month")
-    print("4. View expenses by year")
-    print("5. View expenses by date range")
-    print("6. View expenses by amount range")
-    print("7. View expenses by category and month")
-    print("8. View expenses by category and year")
+
     choice = input("Enter your choice: ")
     switcher = {
         '1': expense_tracker.get_view_all_expenses,
-        '2': lambda: print("View expenses by category"),
-        '3': lambda: print("View expenses by month"),
-        '4': lambda: print("View expenses by year"),
-        '5': lambda: print("View expenses by date range"),
-        '6': lambda: print("View expenses by amount range"),
-        '7': lambda: print("View expenses by category and month"),
-        '8': lambda: print("View expenses by category and year")
     }
     action = switcher.get(choice, lambda: print("Invalid choice"))
     action()
@@ -79,6 +86,7 @@ def view_expenses():
 if __name__ == '__main__':
 
     expense_tracker = ExpenseTracker()
+    expense_tracker.expenses = load_expenses_from_csv()
     while True:
         choice = console_menu()
         print(choice)
@@ -87,7 +95,7 @@ if __name__ == '__main__':
             '1': add_expense_to_tracker,
             '2': view_expenses,
             '3': monthly_expense_tracker,
-            '4': lambda: print("Save expenses"),
+            '4': save_expenses_to_csv,
             '5': lambda: exit()
         }
 

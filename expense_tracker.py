@@ -21,16 +21,16 @@ class ExpenseTracker:
     def get_view_all_expenses(self):
         for index,expense in enumerate(self.expenses):
             print("Expense #", index + 1)
-            print("Date: ", expense["date"])
-            print("Amount: ", expense["amount"])
-            print("Category: ", expense["category"])
-            print("Description: ", expense["description"])
+            print("Date: ", expense["Date"])
+            print("Amount: ", expense["Amount"])
+            print("Category: ", expense["Category"])
+            print("Description: ", expense["Description"])
 
     def calculate_total_expenses_recorded(self):
         total_expenses_recorded = 0
         for index,expense in enumerate(self.expenses):
-            if expense["amount"]:
-                total_expenses_recorded += expense["amount"]
+            if expense["Amount"]:
+                total_expenses_recorded += expense["Amount"]
                 if total_expenses_recorded >= ExpenseTracker.monthly_budget:
                     print("You have reached your monthly budget!")
                     break
@@ -46,50 +46,3 @@ class ExpenseTracker:
                 category_expenses.append(expense)
         return category_expenses
 
-    def get_expenses_by_month(self, month):
-        month_expenses = []
-        for expense in self.expenses:
-            if expense.date.month == month:
-                month_expenses.append(expense)
-        return month_expenses
-
-    def get_expenses_by_year(self, year):
-        year_expenses = []
-        for expense in self.expenses:
-            if expense.date.year == year:
-                year_expenses.append(expense)
-        return year_expenses
-
-    def get_expenses_by_date_range(self, start_date, end_date):
-        date_range_expenses = []
-        for expense in self.expenses:
-            if start_date <= expense.date <= end_date:
-                date_range_expenses.append(expense)
-        return date_range_expenses
-
-    def get_expenses_by_amount_range(self, start_amount, end_amount):
-        amount_range_expenses = []
-        for expense in self.expenses:
-            if start_amount <= expense.amount <= end_amount:
-                amount_range_expenses.append(expense)
-        return amount_range_expenses
-
-    def get_expenses_by_category_and_month(self, category, month):
-        category_month_expenses = []
-        for expense in self.expenses:
-            if expense.category == category and expense.date.month == month:
-                category_month_expenses.append(expense)
-        return category_month_expenses
-
-    def get_expenses_by_category_and_year(self, category, year):
-        category_year_expenses = []
-        for expense in self.expenses:
-            if expense.category == category and expense.date.year == year:
-                category_year_expenses.append(expense)
-        return category_year_expenses
-
-    def get_expenses_by_category_and_date_range(self, category, start_date, end_date):
-        category_date_range_expenses = []
-        for expense in self.expenses:
-            if expense.category == category and start_date <= expense.date <= end_date:
-                category_date_range_expenses.append(expense)
