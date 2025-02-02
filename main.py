@@ -69,12 +69,12 @@ def view_expenses():
     print("*** View expenses ***")
     print("1. View all expenses")
 
-    choice = input("Enter your choice: ")
+    view_expenses_choice = input("Enter your choice: ")
     switcher = {
         '1': expense_tracker.get_view_all_expenses,
     }
-    action = switcher.get(choice, lambda: print("Invalid choice"))
-    action()
+    view_expenses_action = switcher.get(view_expenses_choice, lambda: print("Invalid choice"))
+    view_expenses_action()
 
 def save_and_exit():
     save_expenses_to_csv()
